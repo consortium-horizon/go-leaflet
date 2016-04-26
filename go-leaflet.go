@@ -3,7 +3,12 @@ package main
 import (
     "github.com/gin-gonic/gin"
     "net/http"
+    "html/template"
 )
+
+func markers() template.JS {
+    return "var marker = L.marker([1000, 1000]).addTo(map);"
+}
 
 
 func main() {
@@ -17,6 +22,7 @@ func main() {
     router.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "index.tmpl", gin.H{
             "title": "go-leaflet",
+            "markers": markers,
         })
     })
     router.Run(":8080")
