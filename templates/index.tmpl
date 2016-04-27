@@ -7,13 +7,13 @@
     <h1>{{.title}}</h1>
     <div id="mapid"></div>
 </body>    
-<script type="text/javascript" >
-var map = L.map('mapid', {
-crs: L.CRS.Simple,
-minZoom: -2
-});
-var bounds = [[0,0], [1800,2880]];
-var image = L.imageOverlay('/images/testmap.png', bounds).addTo(map);
-map.fitBounds(bounds);
-{{ call .markers }}
+<script type="text/javascript">
+  var map = L.map('mapid', {
+  crs: L.CRS.Simple,
+  minZoom: -1
+  });
+  var bounds = [[0,0], [1680,1678]];
+  var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
+  map.fitBounds(bounds);
+  {{ call .markers }}
 </script>
