@@ -1,0 +1,20 @@
+<head>
+</head>
+<body>
+    <h1>{{.title}}</h1>
+<ul>
+{{ range $key, $m := call .markers }}
+   <li><strong>{{$key}} {{ $m.Title }}</strong>: {{ $m.Desc }} - {{ $m.X }}:{{ $m.Y }}</li>
+{{ end }}
+</ul>
+<h2>Add marker:</h2>
+<form action="markers/add" method="post">
+  Title: <br>
+  <input type="text" name="title"><br>
+  Description: <br>
+  <input type="text" name="desc"><br>
+  X: <input type="text" name="x"><br>
+  Y: <input type="text" name="y"><br>
+  <input type="submit" value="Submit">
+</form>
+</body>    
