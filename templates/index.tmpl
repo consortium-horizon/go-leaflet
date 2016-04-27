@@ -23,7 +23,9 @@
   // Map initializer
   var map = L.map('mapid', {
   crs: L.CRS.Simple,
-  minZoom: -5
+  minZoom: -5,
+  wheelPxPerZoomLevel: 100
+
   });
   var bounds = [xy(0,16410), xy(16410,0)] //bottom left, upper right
   var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
