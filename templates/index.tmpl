@@ -8,12 +8,31 @@
     <div id="mapid"></div>
 </body>    
 <script type="text/javascript">
+
+  // Function to use X,Y coordinates instead of Y,X
+  var yx = L.latLng;
+  var xy = function(x, y) {
+      if (L.Util.isArray(x)) {    // When doing xy([x, y]);
+          return yx(x[1], x[0]);
+      }
+      return yx(-y, x);  // -y because it's up to down and no down to up like by default
+  };
+
+
+  // Map initializer
   var map = L.map('mapid', {
   crs: L.CRS.Simple,
-  minZoom: -1
+  minZoom: -5
   });
-  var bounds = [[0,0], [1680,1678]];
+  var bounds = [xy(0,16410), xy(16410,0)] //bottom left, upper right
   var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
   map.fitBounds(bounds);
   {{ call .markers }}
+  
+
+  // Custom markers for test
+  var marker = L.marker(xy(3361,8872)).addTo(map).bindPopup('Campement LCH');
+  var marker = L.marker(xy(5225,6084)).addTo(map).bindPopup('Campement Union');
+  var marker = L.marker(xy(5250,12760)).addTo(map).bindPopup('Campement Catalunya');
+
 </script>
