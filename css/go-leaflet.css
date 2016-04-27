@@ -2,3 +2,48 @@
     height: 90%;
     width: 100%;
 }
+
+
+
+/* FONTELLO OVERRIDE */
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 0.7em !important;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  margin-left: -0.05em !important;
+ 
+  /* you can be more comfortable with increased icons size */
+  font-size: 16px !important;
+}
+
+
+
+/* STYLE */
+.markers {
+  /*font-size: 14px;*/
+  /*width: 20px; height: 20px;*/
+  margin: 0; padding: 0;
+  /*margin-left: 50px;*/
+  border: solid 1px #f00;
+}
+
+
+
+/* SHAPE */
+.round {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+
+
+/* COLOR */
+.blue {color: #0D47A1;}
+
+
+
+/* BACKGROUND COLOR */
+.bgred { background-color: #D50000; }
+.bgblue { background-color: #0D47A1; }

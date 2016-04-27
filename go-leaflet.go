@@ -116,6 +116,7 @@ func main() {
 
 
     router.Static("/css", "./css")
+    router.Static("/font", "./font")
     router.Static("/js", "./js")
     router.Static("/images", "./images")
     router.LoadHTMLGlob("templates/*")
