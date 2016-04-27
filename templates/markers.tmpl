@@ -4,7 +4,7 @@
     <h1>{{.title}}</h1>
 <ul>
 {{ range $key, $m := call .markers }}
-   <li><strong>{{$key}} {{ $m.Title }}</strong>: {{ $m.Desc }} - {{ $m.X }}:{{ $m.Y }}</li>
+   <li><strong>{{$key}} {{ $m.Title }}</strong>: {{ $m.Desc }} - {{ $m.X }}:{{ $m.Y }} <form action="markers/delete" method="post"><input type="hidden" name="key" value="marker{{$key}}"><input type="submit" value="X"></form></li>
 {{ end }}
 </ul>
 <h2>Add marker:</h2>

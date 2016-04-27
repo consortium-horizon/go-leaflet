@@ -3,7 +3,8 @@ package main
 import (
     "github.com/gin-gonic/gin"
     "net/http"
-    "html/template"
+    // "html/template"
+    "strings"
     "github.com/peterbourgon/diskv"
     "fmt"
     "encoding/gob"
@@ -76,36 +77,25 @@ func (m* Marker) WriteToDB() error {
     return err
 }
 
-func markers() []Marker {
-    markers := make([]Marker, 0)
+func markers() map[int]Marker {
+    markers := make(map[int]Marker)
     db := initDB()
     keybase := "marker"
-    index := 0
-    key := keybase + strconv.Itoa(index)
     var err error
-    for db.Has(key) {
+    keys := db.KeysPrefix(keybase, nil)
+    for key := range keys {
         var valueread []byte
         valueread, err = db.Read(key)
+        index,_ := strconv.Atoi(strings.TrimPrefix(key, keybase))
         if err==nil{
             var m Marker
             err = m.GobDecode(valueread)
-            markers = append(markers, m)
+            markers[index] = m
         }
-        //next iter
-        index++
-        key = keybase + strconv.Itoa(index)
     }
     return markers
 }
 
-func markersJS() template.JS {
-    markers := markers()
-    output := ""
-    for _, m := range markers{
-        output += fmt.Sprintf("var marker = L.marker([%d, %d]).addTo(map);\n",m.X,m.Y)
-    }
-    return template.JS(output)
-}
 func initDB() *diskv.Diskv {
     // Simplest transform function: put all the data files into the base dir.
     flatTransform := func(s string) []string { return []string{} }
@@ -133,7 +123,7 @@ func main() {
     router.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "index.tmpl", gin.H{
             "title": "go-leaflet",
-            "markers": markersJS,
+            "markers": markers,
         })
     })
     router.GET("/markers", func(c *gin.Context) {
@@ -155,6 +145,13 @@ func main() {
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
         m := Marker{Title:title, Desc: desc, X: x, Y: y }
         m.WriteToDB()
+        c.Redirect(http.StatusMovedPermanently, "/markers")
+    })
+    router.POST("/markers/delete", func(c *gin.Context) {
+        key := c.PostForm("key")
+        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
+        db := initDB();
+        db.Erase(key)
         c.Redirect(http.StatusMovedPermanently, "/markers")
     })
     router.Run(":8080")

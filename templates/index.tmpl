@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>{{.title}}</h1>
+    <a href="/markers">Markers</a>
     <div id="mapid"></div>
 </body>    
 <script type="text/javascript">
@@ -13,7 +14,7 @@
   var yx = L.latLng;
   var xy = function(x, y) {
       if (L.Util.isArray(x)) {    // When doing xy([x, y]);
-          return yx(x[1], x[0]);
+          return yx(-x[1], x[0]);
       }
       return yx(-y, x);  // -y because it's up to down and no down to up like by default
   };
@@ -27,7 +28,9 @@
   var bounds = [xy(0,16410), xy(16410,0)] //bottom left, upper right
   var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
   map.fitBounds(bounds);
-  {{ call .markers }}
+{{ range $key, $m := call .markers }}
+    var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}])).addTo(map).bindPopup('<strong>{{ $m.Title }}</strong><br>{{ $m.Desc }}');
+{{ end }}
   
 
   // Custom markers for test
