@@ -40,10 +40,25 @@
 
 
 /* COLOR */
-.blue {color: #0D47A1;}
+.black { color: #111111; }
+.white { color: #f7f7f7; text-shadow: -1px 0 #787878, 0 1px #787878, 1px 0 #787878, 0 -1px #787878; }
+.grey { color: #AAAAAA; text-shadow: -1px 0 #2b2b2b, 0 1px #2b2b2b, 1px 0 #2b2b2b, 0 -1px #2b2b2b; }
+.red { color: #FF4136; text-shadow: -1px 0 #80201b, 0 1px #80201b, 1px 0 #80201b, 0 -1px #80201b; }
+.green { color: #2ECC40; text-shadow: -1px 0 #124d18, 0 1px #124d18, 1px 0 #124d18, 0 -1px #124d18; }
+.blue { color: #0074D9; text-shadow: -1px 0 #003059, 0 1px #003059, 1px 0 #003059, 0 -1px #003059; }
+.yellow { color: #FFDC00; text-shadow: -1px 0 #806e00, 0 1px #806e00, 1px 0 #806e00, 0 -1px #806e00; }
+.purple { color: #7B11D0; text-shadow: -1px 0 #300752, 0 1px #300752, 1px 0 #300752, 0 -1px #300752; }
+.orange { color: #FFA500; text-shadow: -1px 0 #805300, 0 1px #805300, 1px 0 #805300, 0 -1px #805300; }
 
 
 
 /* BACKGROUND COLOR */
-.bgred { background-color: #D50000; }
-.bgblue { background-color: #0D47A1; }
+.bgblack { background-color: #111111; }
+.bgwhite { color: #f7f7f7; }
+.bggrey { background-color: #AAAAAA; }
+.bgred { background-color: #FF4136; }
+.bggreen { background-color: #2ECC40; }
+.bgblue {background-color: #0074D9;}
+.bgyellow { background-color: #FFDC00; }
+.bgpurple { background-color: #7B11D0; }
+.bgorange { background-color: #FFA500; }
