@@ -60,19 +60,23 @@ func (d *Marker) GobDecode(buf []byte) error {
 }
 
 func (m* Marker) WriteToDB() error {
-    db := initDB()
     keybase := "marker"
     index := 0
     key := keybase + strconv.Itoa(index)
+    db := initDB()
     for db.Has(key) {
         index++
         key = keybase + strconv.Itoa(index)
     }
+    return m.WriteToDBWithKey(key)
+}
+
+func (m* Marker) WriteToDBWithKey(key string) error {
+    db := initDB()
     valueasBytes, err := m.GobEncode()
     if err!=nil {
         fmt.Println("%v",err)
     }
-
     db.Write(key, valueasBytes )
     return err
 }
@@ -109,7 +113,12 @@ func initDB() *diskv.Diskv {
     return d;
 }
 
-
+// simulate some private data
+var secrets = gin.H{
+    "foo":    gin.H{"email": "foo@bar.com", "phone": "123433"},
+    "austin": gin.H{"email": "austin@example.com", "phone": "666"},
+    "lena":   gin.H{"email": "lena@guapa.com", "phone": "523443"},
+}
 func main() {
     router := gin.Default()
 
@@ -120,21 +129,27 @@ func main() {
     router.Static("/js", "./js")
     router.Static("/images", "./images")
     router.LoadHTMLGlob("templates/*")
-    //router.LoadHTMLFiles("templates/template1.html", "templates/template2.html")
     router.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "index.tmpl", gin.H{
             "title": "go-leaflet",
             "markers": markers,
         })
     })
-    router.GET("/markers", func(c *gin.Context) {
+
+    // Group using gin.BasicAuth() middleware
+    // gin.Accounts is a shortcut for map[string]string
+    authorized := router.Group("/markers", gin.BasicAuth(gin.Accounts{
+        "admin":   "lch",
+    }))
+
+    authorized.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "markers.tmpl", gin.H{
             "title": "Markers",
             "markers": markers,
         })
     })
 
-    router.POST("/markers/add", func(c *gin.Context) {
+    authorized.POST("/add", func(c *gin.Context) {
         title := c.PostForm("title")
         desc := c.PostForm("desc")
         x, err := strconv.Atoi(c.PostForm("x"))
@@ -146,14 +161,47 @@ func main() {
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
         m := Marker{Title:title, Desc: desc, X: x, Y: y }
         m.WriteToDB()
-        c.Redirect(http.StatusMovedPermanently, "/markers")
+        c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
     })
-    router.POST("/markers/delete", func(c *gin.Context) {
+    authorized.POST("/delete", func(c *gin.Context) {
         key := c.PostForm("key")
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
         db := initDB();
         db.Erase(key)
-        c.Redirect(http.StatusMovedPermanently, "/markers")
+        c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
     })
+
+    authorized.POST("/edit", func(c *gin.Context) {
+        title := c.PostForm("title")
+        desc := c.PostForm("desc")
+        x, err := strconv.Atoi(c.PostForm("x"))
+        y, err := strconv.Atoi(c.PostForm("y"))
+        key := c.PostForm("key")
+        if err!=nil {
+            fmt.Printf("%v",err)
+            return
+        }
+        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
+        m := Marker{Title:title, Desc: desc, X: x, Y: y }
+        m.WriteToDBWithKey(key)
+        c.Request.Header.Get("Referer")
+        c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+    })
+
+
+
+
+    // /admin/secrets endpoint
+    // hit "localhost:8080/admin/secrets
+    authorized.GET("/secrets", func(c *gin.Context) {
+        // get user, it was set by the BasicAuth middleware
+        user := c.MustGet(gin.AuthUserKey).(string)
+        if secret, ok := secrets[user]; ok {
+            c.JSON(http.StatusOK, gin.H{"user": user, "secret": secret})
+        } else {
+            c.JSON(http.StatusOK, gin.H{"user": user, "secret": "NO SECRET :("})
+        }
+    })
+    
     router.Run(":8080")
 }

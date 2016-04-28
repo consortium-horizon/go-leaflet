@@ -40,7 +40,7 @@
               <td>{{ $m.Desc }}</td>
               <td>{{ $m.X }},{{ $m.Y }}</td>
               <td>
-                <form class="form-inline" action="markers/delete" method="post">
+                <form class="form-inline" action="delete" method="post">
                   <fieldset>
                     <input type="hidden" name="key" value="marker{{$key}}">
                     <input type="submit" value="X">
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="row">
-      <form action="markers/add" method="post" class="form-horizontal col-lg-9">
+      <form action="add" method="post" class="form-horizontal col-lg-9">
         <fieldset>
           <legend>Ajouter un marqueur :</legend>
           <div class="form-group">
