@@ -4,87 +4,188 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Markers</title>
+    <title>Marqueurs</title>
+
+    <link rel="stylesheet" href="/css/fontello.css" >
+    <link rel="stylesheet" href="/css/go-leaflet.css" >
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- jQWidgets Theme -->
+    <link rel="stylesheet" href="http://www.jqwidgets.com/public/jqwidgets/styles/jqx.base.css" type="text/css" />
+    <link rel="stylesheet" href="http://www.jqwidgets.com/public/jqwidgets/styles/jqx.bootstrap.css" type="text/css" />
 </head>
 <body>    
-    <div class="col-lg-2"></div>
-<div class="col-lg-8">
-<h1>{{.title}}</h1>
-<div class="row">
-<div class="col-lg-12">
-<table class="table table-hover">
-<tr>
-<th>#</th>
-<th>Title</th>
-<th>Description</th>
-<th>Coords</th>
-<th>Delete</th>
-</tr>
-{{ range $key, $m := call .markers }}
-    <tr>
-    <td>{{$key}}</td>
-    <td>{{ $m.Title }}</td>
-    <td>{{ $m.Desc }}</td>
-    <td>{{ $m.X }}:{{ $m.Y }}</td>
-    <td>
-    <form class="form-inline" action="markers/delete" method="post">
-        <fieldset>
-            <input type="hidden" name="key" value="marker{{$key}}">
-            <input type="submit" value="X">
-       </fieldset>
-   </form>
-   </td>
-   </tr>
-{{ end }}
-</table>
-</div>
-</div>
-<div class="row">
-<form action="markers/add" method="post" class="form-horizontal col-lg-6">
-<fieldset>
-    <legend>Add marker:</legend>
-    <div class="form-group">
-        <label for="inputTitle" class="col-lg-3 control-label">Title:</label>
-        <div class="col-lg-9">
-            <input type="text" name="title" id="inputTitle" class="form-control" placeholder="Title">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputDesc" class="col-lg-3 control-label">Description:</label>
-        <div class="col-lg-9">
-            <input type="text" name="desc" id="inputDesc" class="form-control" placeholder="Description">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputX" class="col-lg-3 control-label">X:</label>
-        <div class="col-lg-9">
-            <input type="text" name="x" id="inputX" class="form-control" placeholder="Description">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="inputY" class="col-lg-3 control-label">Y:</label>
-        <div class="col-lg-9">
-            <input type="text" name="y" id="inputY" class="form-control" placeholder="Description">
-        </div>
-    </div>
-    <div class="form-group">
-      <div class="col-lg-10 col-lg-offset-7">
-        <button type="reset" class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Add</button>
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <h1>{{.title}}</h1>
+    <div class="row">
+      <div class="col-lg-12">
+        <table class="table table-hover">
+          <tr>
+          <th>#</th>
+          <th>Titre</th>
+          <th>Description</th>
+          <th>Coordonnnées (X,Y)</th>
+          <th>Action</th>
+          </tr>
+          {{ range $key, $m := call .markers }}
+            <tr>
+              <td>{{$key}}</td>
+              <td>{{ $m.Title }}</td>
+              <td>{{ $m.Desc }}</td>
+              <td>{{ $m.X }},{{ $m.Y }}</td>
+              <td>
+                <form class="form-inline" action="markers/delete" method="post">
+                  <fieldset>
+                    <input type="hidden" name="key" value="marker{{$key}}">
+                    <input type="submit" value="X">
+                 </fieldset>
+                </form>
+              </td>
+            </tr>
+          {{ end }}
+        </table>
       </div>
     </div>
-</fieldset>
-</form>
-</div>
-</div>
-<div class="col-lg-2"></div>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <div class="row">
+      <form action="markers/add" method="post" class="form-horizontal col-lg-9">
+        <fieldset>
+          <legend>Ajouter un marqueur :</legend>
+          <div class="form-group">
+            <label for="inputTitle" class="col-lg-3 control-label">Titre :</label>
+            <div class="col-lg-9">
+              <input type="text" name="title" id="inputTitle" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDesc" class="col-lg-3 control-label">Description :</label>
+            <div class="col-lg-9">
+              <input type="text" name="desc" id="inputDesc" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputX" class="col-lg-3 control-label">Coord. X :</label>
+            <div class="col-lg-9">
+              <input type="text" name="x" id="inputX" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputY" class="col-lg-3 control-label">Coord. Y :</label>
+            <div class="col-lg-9">
+              <input type="text" name="y" id="inputY" class="form-control" placeholder="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="color" class="col-lg-3 control-label">Couleur :</label>
+            <div class="col-lg-9">
+              <div id='color'></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="icon" class="col-lg-3 control-label">Icone :</label>
+            <div class="col-lg-9">
+              <div id='icon'></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-6 col-lg-offset-3">
+              <a href="/" class="button">Retour sur la carte</a>
+              <button type="reset" class="btn btn-default">Annuler</button>
+              <button type="submit" class="btn btn-primary">Ajouter</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-2"></div>
+
+
+
+
+
+
+
+
+
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <!-- jQWidgets -->
+  <script type="text/javascript" src="http://www.jqwidgets.com/public/jqwidgets/jqxcore.js"></script>
+  <script type="text/javascript" src="http://www.jqwidgets.com/public/jqwidgets/jqx-all.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var icon_list = [
+        { html: '<i class="icon-star"></i>' },
+        { html: '<i class="icon-home"></i>' },
+        { html: '<i class="icon-heart"></i>' },
+        { html: '<i class="icon-star-half-alt"></i>' },
+        { html: '<i class="icon-user"></i>' },
+        { html: '<i class="icon-user-secret"></i>' },
+        { html: '<i class="icon-ok-circled"></i>' },
+        { html: '<i class="icon-plus-circled"></i>' },
+        { html: '<i class="icon-cancel-circled"></i>' },
+        { html: '<i class="icon-minus-circled"></i>' },
+        { html: '<i class="icon-lock"></i>' },
+        { html: '<i class="icon-bookmark"></i>' },
+        { html: '<i class="icon-flag"></i>' },
+        { html: '<i class="icon-comment"></i>' },
+        { html: '<i class="icon-chat"></i>' },
+        { html: '<i class="icon-bell-alt"></i>' },
+        { html: '<i class="icon-attention-circled"></i>' },
+        { html: '<i class="icon-location"></i>' },
+        { html: '<i class="icon-direction"></i>' },
+        { html: '<i class="icon-cog"></i>' },
+        { html: '<i class="icon-tint"></i>' },
+        { html: '<i class="icon-fire"></i>' },
+        { html: '<i class="icon-asterisk"></i>' },
+        { html: '<i class="icon-home"></i>' },
+        { html: '<i class="icon-dot-circled"></i>' },
+        { html: '<i class="icon-key"></i>' },
+        { html: '<i class="icon-bug"></i>' },
+        { html: '<i class="icon-beaker"></i>' },
+        { html: '<i class="icon-gift"></i>' },
+        { html: '<i class="icon-beer"></i>' },
+      ];
+      // Create a jqxDropDownList
+      $("#icon").jqxDropDownList({
+        theme: 'bootstrap',
+        selectedIndex: 0,
+        //autoOpen: true,
+        source: icon_list,
+        width: '100%',
+        height: '35px'
+      });
+
+      var color_list = [
+        { html: '<div class="fleft"><div class="square bgblack"><div class="mlm lhm">Noir</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgwhite"><div class="mlm lhm">Blanc</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bggrey"><div class="mlm lhm">Gris</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgblue"><div class="mlm lhm">Bleu</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgred"><div class="mlm lhm">Rouge</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bggreen"><div class="mlm lhm">Vert</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgpurple"><div class="mlm lhm">Violet</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgyellow"><div class="mlm lhm">Jaune</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgorange"><div class="mlm lhm">Orange</div></div></div>' },
+      ];
+      // Create a jqxDropDownList
+      $("#color").jqxDropDownList({
+        theme: 'bootstrap',
+        selectedIndex: 0,
+        source: color_list,
+        width: '100%',
+        height: '35px'
+      });
+    });
+  </script>
 </body>    
 </html>
