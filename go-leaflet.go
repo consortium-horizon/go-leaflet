@@ -17,6 +17,8 @@ type  Marker struct {
     Y int
     Title string
     Desc string
+    Color string
+    Icon string
 }
 
 func (d *Marker) GobEncode() ([]byte, error) {
@@ -144,7 +146,7 @@ func main() {
 
     authorized.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "markers.tmpl", gin.H{
-            "title": "Markers",
+            "title": "Marqueurs",
             "markers": markers,
         })
     })
@@ -154,12 +156,14 @@ func main() {
         desc := c.PostForm("desc")
         x, err := strconv.Atoi(c.PostForm("x"))
         y, err := strconv.Atoi(c.PostForm("y"))
+        color := c.PostForm("color")
+        icon := c.PostForm("icon")
         if err!=nil {
             fmt.Printf("%v",err)
             return
         }
-        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
-        m := Marker{Title:title, Desc: desc, X: x, Y: y }
+        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v; color: %v; icon:%v", title, desc, x, y, color, icon)
+        m := Marker{Title:title, Desc: desc, X: x, Y: y, Color: color, Icon: icon }
         m.WriteToDB()
         c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
     })
@@ -176,13 +180,15 @@ func main() {
         desc := c.PostForm("desc")
         x, err := strconv.Atoi(c.PostForm("x"))
         y, err := strconv.Atoi(c.PostForm("y"))
+        color := c.PostForm("color")
+        icon := c.PostForm("icon")
         key := c.PostForm("key")
         if err!=nil {
             fmt.Printf("%v",err)
             return
         }
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
-        m := Marker{Title:title, Desc: desc, X: x, Y: y }
+        m := Marker{Title:title, Desc: desc, X: x, Y: y, Color: color, Icon: icon }
         m.WriteToDBWithKey(key)
         c.Request.Header.Get("Referer")
         c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))

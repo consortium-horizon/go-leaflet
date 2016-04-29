@@ -28,6 +28,7 @@
         <table class="table table-hover">
           <tr>
           <th>#</th>
+          <th>Icone</th>
           <th>Titre</th>
           <th>Description</th>
           <th>Coordonnnées (X,Y)</th>
@@ -36,6 +37,7 @@
           {{ range $key, $m := call .markers }}
             <tr>
               <td>{{ $key }}</td>
+              <td>{{ $m.Icon }}, {{ $m.Color }}</td>
               <td>{{ $m.Title }}</td>
               <td>{{ $m.Desc }}</td>
               <td>{{ $m.X }},{{ $m.Y }}</td>
@@ -59,37 +61,39 @@
           <div class="form-group">
             <label for="inputTitle" class="col-lg-3 control-label">Titre :</label>
             <div class="col-lg-9">
-              <input type="text" name="title" id="inputTitle" class="form-control" placeholder="">
+              <input type="text" name="title" id="inputTitle" class="form-control">
             </div>
           </div>
           <div class="form-group">
             <label for="inputDesc" class="col-lg-3 control-label">Description :</label>
             <div class="col-lg-9">
-              <input type="text" name="desc" id="inputDesc" class="form-control" placeholder="">
+              <input type="text" name="desc" id="inputDesc" class="form-control">
             </div>
           </div>
           <div class="form-group">
             <label for="inputX" class="col-lg-3 control-label">Coord. X :</label>
             <div class="col-lg-9">
-              <input type="text" name="x" id="inputX" class="form-control" placeholder="">
+              <input type="text" name="x" id="inputX" class="form-control">
             </div>
           </div>
           <div class="form-group">
             <label for="inputY" class="col-lg-3 control-label">Coord. Y :</label>
             <div class="col-lg-9">
-              <input type="text" name="y" id="inputY" class="form-control" placeholder="">
+              <input type="text" name="y" id="inputY" class="form-control">
             </div>
           </div>
           <div class="form-group">
             <label for="color" class="col-lg-3 control-label">Couleur :</label>
             <div class="col-lg-9">
               <div id='color'></div>
+              <input type="hidden" name="color" id="color-field">
             </div>
           </div>
           <div class="form-group">
             <label for="icon" class="col-lg-3 control-label">Icone :</label>
             <div class="col-lg-9">
               <div id='icon'></div>
+              <input type="hidden" name="icon" id="icon-field">
             </div>
           </div>
           <div class="form-group">
@@ -110,10 +114,6 @@
 
 
 
-
-
-
-
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -125,66 +125,81 @@
   <script type="text/javascript">
     $(document).ready(function () {
       var icon_list = [
-        { html: '<i class="icon-star"></i>' },
-        { html: '<i class="icon-home"></i>' },
-        { html: '<i class="icon-heart"></i>' },
-        { html: '<i class="icon-star-half-alt"></i>' },
-        { html: '<i class="icon-user"></i>' },
-        { html: '<i class="icon-user-secret"></i>' },
-        { html: '<i class="icon-ok-circled"></i>' },
-        { html: '<i class="icon-plus-circled"></i>' },
-        { html: '<i class="icon-cancel-circled"></i>' },
-        { html: '<i class="icon-minus-circled"></i>' },
-        { html: '<i class="icon-lock"></i>' },
-        { html: '<i class="icon-bookmark"></i>' },
-        { html: '<i class="icon-flag"></i>' },
-        { html: '<i class="icon-comment"></i>' },
-        { html: '<i class="icon-chat"></i>' },
-        { html: '<i class="icon-bell-alt"></i>' },
-        { html: '<i class="icon-attention-circled"></i>' },
-        { html: '<i class="icon-location"></i>' },
-        { html: '<i class="icon-direction"></i>' },
-        { html: '<i class="icon-cog"></i>' },
-        { html: '<i class="icon-tint"></i>' },
-        { html: '<i class="icon-fire"></i>' },
-        { html: '<i class="icon-asterisk"></i>' },
-        { html: '<i class="icon-home"></i>' },
-        { html: '<i class="icon-dot-circled"></i>' },
-        { html: '<i class="icon-key"></i>' },
-        { html: '<i class="icon-bug"></i>' },
-        { html: '<i class="icon-beaker"></i>' },
-        { html: '<i class="icon-gift"></i>' },
-        { html: '<i class="icon-beer"></i>' },
+        { html: '<i class="icon-star"></i>', value: "icon-star" },
+        { html: '<i class="icon-home"></i>', value: "icon-home" },
+        { html: '<i class="icon-heart"></i>', value: "icon-heart" },
+        { html: '<i class="icon-star-half-alt"></i>', value: "icon-star-half-alt" },
+        { html: '<i class="icon-user"></i>', value: "icon-user" },
+        { html: '<i class="icon-user-secret"></i>', value: "icon-user-secret" },
+        { html: '<i class="icon-ok-circled"></i>', value: "icon-ok-circled" },
+        { html: '<i class="icon-plus-circled"></i>', value: "icon-plus-circled" },
+        { html: '<i class="icon-cancel-circled"></i>', value: "icon-cancel-circled" },
+        { html: '<i class="icon-minus-circled"></i>', value: "icon-minus-circled" },
+        { html: '<i class="icon-lock"></i>', value: "icon-lock" },
+        { html: '<i class="icon-bookmark"></i>', value: "icon-bookmark" },
+        { html: '<i class="icon-flag"></i>', value: "icon-flag" },
+        { html: '<i class="icon-comment"></i>', value: "icon-comment" },
+        { html: '<i class="icon-chat"></i>', value: "icon-chat" },
+        { html: '<i class="icon-bell-alt"></i>', value: "icon-bell-alt" },
+        { html: '<i class="icon-attention-circled"></i>', value: "icon-attention-circled" },
+        { html: '<i class="icon-location"></i>', value: "icon-location" },
+        { html: '<i class="icon-direction"></i>', value: "icon-direction" },
+        { html: '<i class="icon-cog"></i>', value: "icon-cog" },
+        { html: '<i class="icon-tint"></i>', value: "icon-tint" },
+        { html: '<i class="icon-fire"></i>', value: "icon-fire" },
+        { html: '<i class="icon-asterisk"></i>', value: "icon-asterisk" },
+        { html: '<i class="icon-home"></i>', value: "icon-home" },
+        { html: '<i class="icon-dot-circled"></i>', value: "icon-dot-circled" },
+        { html: '<i class="icon-key"></i>', value: "icon-key" },
+        { html: '<i class="icon-bug"></i>', value: "icon-bug" },
+        { html: '<i class="icon-beaker"></i>', value: "icon-beaker" },
+        { html: '<i class="icon-gift"></i>', value: "icon-gift" },
+        { html: '<i class="icon-beer"></i>', value: "icon-beer" },
       ];
+      // Define Default Index
+      var ICON_SELECTED_INDEX = 0;
       // Create a jqxDropDownList
       $("#icon").jqxDropDownList({
         theme: 'bootstrap',
-        selectedIndex: 0,
-        //autoOpen: true,
+        selectedIndex: ICON_SELECTED_INDEX,
         source: icon_list,
         width: '100%',
         height: '35px'
       });
+      // Select value of an item
+      $('#icon').on('select', function (event){
+        $('#icon-field').val(event.args.item.value);
+      });
+      $('#icon-field').val(icon_list[ICON_SELECTED_INDEX].value);
+
 
       var color_list = [
-        { html: '<div class="fleft"><div class="square bgblack"><div class="mlm lhm">Noir</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bgwhite"><div class="mlm lhm">Blanc</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bggrey"><div class="mlm lhm">Gris</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bgblue"><div class="mlm lhm">Bleu</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bgred"><div class="mlm lhm">Rouge</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bggreen"><div class="mlm lhm">Vert</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bgpurple"><div class="mlm lhm">Violet</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bgyellow"><div class="mlm lhm">Jaune</div></div></div>' },
-        { html: '<div class="fleft"><div class="square bgorange"><div class="mlm lhm">Orange</div></div></div>' },
+        { html: '<div class="fleft"><div class="square bgblack"><div class="mlm lhm">Noir</div></div></div>', value: "black" },
+        { html: '<div class="fleft"><div class="square bgwhite"><div class="mlm lhm">Blanc</div></div></div>', value: "white" },
+        { html: '<div class="fleft"><div class="square bggrey"><div class="mlm lhm">Gris</div></div></div>', value: "grey" },
+        { html: '<div class="fleft"><div class="square bgblue"><div class="mlm lhm">Bleu</div></div></div>', value: "blue" },
+        { html: '<div class="fleft"><div class="square bgred"><div class="mlm lhm">Rouge</div></div></div>', value: "red" },
+        { html: '<div class="fleft"><div class="square bggreen"><div class="mlm lhm">Vert</div></div></div>', value: "green" },
+        { html: '<div class="fleft"><div class="square bgpurple"><div class="mlm lhm">Violet</div></div></div>', value: "purple" },
+        { html: '<div class="fleft"><div class="square bgyellow"><div class="mlm lhm">Jaune</div></div></div>', value: "yellow" },
+        { html: '<div class="fleft"><div class="square bgorange"><div class="mlm lhm">Orange</div></div></div>', value: "orange" },
       ];
+
+      // Define Default Index
+      var COLOR_SELECTED_INDEX = 0;
       // Create a jqxDropDownList
       $("#color").jqxDropDownList({
         theme: 'bootstrap',
-        selectedIndex: 0,
+        selectedIndex: COLOR_SELECTED_INDEX,
         source: color_list,
         width: '100%',
         height: '35px'
       });
+      // Select value of an item
+      $('#color').on('select', function (event){
+        $('#color-field').val(event.args.item.value);
+      });
+      $('#color-field').val(color_list[COLOR_SELECTED_INDEX].value);
     });
   </script>
 </body>    
