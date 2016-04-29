@@ -2,7 +2,9 @@
     <link rel="stylesheet" href="/css/leaflet.css" >
     <link rel="stylesheet" href="/css/fontello.css" >
     <link rel="stylesheet" href="/css/go-leaflet.css" >
+    <link rel="stylesheet" href="/css/L.Control.MousePosition.css" >
     <script src="/js/leaflet.js"></script>
+    <script src="/js/L.Control.MousePosition.js"></script>
 </head>
 <body>
     <h1>{{.title}}</h1>
@@ -41,6 +43,17 @@
     var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}])).addTo(map).bindPopup('<strong>{{ $m.Title }}</strong><br>{{ $m.Desc }}');
   {{ end }}
   
+  // Mouse Position
+  var mouse = L.control.mousePosition({
+    separator: ' , ',
+    emptyString: 'Positionnez la souris...',
+    lngFirst: true,
+    lngFormatter: function (longitude) { return Math.floor(L.Util.formatNum(longitude, this.numDigits)) },
+    latFormatter: function (latitude) { return Math.floor(L.Util.formatNum(-latitude, this.numDigits)) },
+    }).addTo(map);
+
+
+
 
   // Custom markers for test
   var marker = L.marker(xy(3361,8872), {icon: myIconDIV}).addTo(map).bindPopup('Campement LCH');

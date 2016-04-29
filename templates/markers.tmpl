@@ -35,7 +35,7 @@
           </tr>
           {{ range $key, $m := call .markers }}
             <tr>
-              <td>{{$key}}</td>
+              <td>{{ $key }}</td>
               <td>{{ $m.Title }}</td>
               <td>{{ $m.Desc }}</td>
               <td>{{ $m.X }},{{ $m.Y }}</td>
