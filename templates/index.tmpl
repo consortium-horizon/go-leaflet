@@ -22,28 +22,47 @@
       return yx(-y, x);  // -y because it's up to down and no down to up like by default
   };
 
+  // Custom markers
+  var marker1 = L.marker(xy(3361,8872), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre un peu long parce qu\'il faut tester</b><br><em>Campement LCH</em>');
+  var marker2 = L.marker(xy(7958,14332), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
+  var marker3 = L.marker(xy(3568,7801), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
 
-  // Custom icon DIV CSS
-  var myIconDIV = L.divIcon({className: 'icon-location blue'});
-
-
-
+  var marker4 = L.marker(xy(5120,6185), {icon: L.divIcon({className: 'icon-home green'})}).bindPopup('<b>Union</b><br><em>Campement principal</em>');
+  var marker5 = L.marker(xy(3376,8633), {icon: L.divIcon({className: 'icon-home green'})}).bindPopup('<b>Deutschland</b><br><em>Campement</em>');
+  // Define the Group of markers
+  var markers1 = L.layerGroup([marker1, marker2, marker3]);
+  var markers2 = L.layerGroup([marker4, marker5]);
 
 
   // Map initializer
   var map = L.map('mapid', {
     crs: L.CRS.Simple,
-    minZoom: -4,
-    wheelPxPerZoomLevel: 125
+    minZoom: -5,
+    wheelPxPerZoomLevel: 150,
+    layers: [markers1, markers2]
   });
-  var bounds = [xy(0,16410), xy(16410,0)] //bottom left, upper right
+  var bounds = [xy(0,16410), xy(16410,0)];
   var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
   map.fitBounds(bounds);
+  /*
   {{ range $key, $m := call .markers }}
     var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}])).addTo(map).bindPopup('<strong>{{ $m.Title }}</strong><br>{{ $m.Desc }}');
   {{ end }}
-  
-  // Mouse Position
+  */
+
+
+  // Layers initializer
+  var overlayMaps = {
+    '<i class="icon-location blue"></i> Campements LCH': markers1,
+    '<i class="icon-home green"></i> Campements alliés': markers2
+  };
+
+  // Add Layers
+  L.control.layers(null, overlayMaps, {collapsed: false}).addTo(map);
+
+
+
+  // Mouse Position plugin
   var mouse = L.control.mousePosition({
     separator: ' , ',
     emptyString: 'Positionnez la souris...',
@@ -51,17 +70,4 @@
     lngFormatter: function (longitude) { return Math.floor(L.Util.formatNum(longitude, this.numDigits)) },
     latFormatter: function (latitude) { return Math.floor(L.Util.formatNum(-latitude, this.numDigits)) },
     }).addTo(map);
-
-
-
-
-  // Custom markers for test
-  var marker = L.marker(xy(3361,8872), {icon: myIconDIV}).addTo(map).bindPopup('Campement LCH');
-  var marker = L.marker(xy(7958,14332), {icon: myIconDIV}).addTo(map).bindPopup('Campement LCH');
-
-  //var marker = L.marker(xy(3361,8872)).addTo(map).bindPopup('Campement LCH');
-  var marker = L.marker(xy(5225,6084)).addTo(map).bindPopup('Campement Union');
-  var marker = L.marker(xy(5250,12760)).addTo(map).bindPopup('Campement Catalunya');
-
-
 </script>
