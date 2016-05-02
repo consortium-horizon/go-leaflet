@@ -40,6 +40,14 @@ func (d *Marker) GobEncode() ([]byte, error) {
     if err!=nil {
         return nil, err
     }
+    err = encoder.Encode(d.Color)
+    if err!=nil {
+        return nil, err
+    }
+    err = encoder.Encode(d.Icon)
+    if err!=nil {
+        return nil, err
+    }
     return w.Bytes(), nil
 }
 
@@ -58,7 +66,15 @@ func (d *Marker) GobDecode(buf []byte) error {
     if err!=nil {
         return err
     }
-    return decoder.Decode(&d.Desc)
+    err = decoder.Decode(&d.Desc)
+    if err!=nil {
+        return err
+    }
+    err = decoder.Decode(&d.Color)
+    if err!=nil {
+        return err
+    }
+    return decoder.Decode(&d.Icon)
 }
 
 func (m* Marker) WriteToDB() error {
