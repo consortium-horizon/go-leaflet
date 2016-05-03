@@ -37,7 +37,7 @@
           {{ range $key, $m := call .markers }}
             <tr>
               <td>{{ $key }}</td>
-              <td>{{ $m.Icon }}, {{ $m.Color }}</td>
+              <td><i class="{{ $m.Icon }} {{ $m.Color }}"></i></td>
               <td>{{ $m.Title }}</td>
               <td>{{ $m.Desc }}</td>
               <td>{{ $m.X }},{{ $m.Y }}</td>
@@ -46,6 +46,7 @@
                   <fieldset>
                     <input type="hidden" name="key" value="marker{{$key}}">
                     <input type="submit" value="X">
+                    <a href="#"><i class="icon-pencil black"></i></a>
                  </fieldset>
                 </form>
               </td>
