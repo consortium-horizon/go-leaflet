@@ -1,73 +1,94 @@
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="/css/leaflet.css" >
     <link rel="stylesheet" href="/css/fontello.css" >
     <link rel="stylesheet" href="/css/go-leaflet.css" >
     <link rel="stylesheet" href="/css/L.Control.MousePosition.css" >
-    <script src="/js/leaflet.js"></script>
-    <script src="/js/L.Control.MousePosition.js"></script>
+
+    <link rel="stylesheet" href="/css/app.css">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="/images/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <title>{{.title}}</title>
 </head>
+
+
 <body>
-    <h1>{{.title}}</h1>
-    <a href="/markers">Markers</a>
-    <div id="mapid"></div>
-</body>    
+  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="navbar-icon-container">
+          <a id="nav-btn" class="navbar-icon pull-right visible-xs" href="#"><i class="fa fa-bars fa-lg white"></i></a>
+          <a id="sidebar-toggle-btn" class="navbar-icon pull-right visible-xs" href="#"><i class="fa fa-search fa-lg white"></i></a>
+        </div>
+        <a href="#" class="navbar-brand">{{.title}}</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="#"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;A propos</a></li>
+          <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="/markers"><i class="fa fa-cog white"></i>&nbsp;&nbsp;Marqueurs</a></li>
+          <li><a id="full-extent-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="#"><i class="fa fa-arrows-alt white"></i>&nbsp;&nbsp;Réinitialiser le zoom</a></li>
+        </ul>
+      </div><!--/.navbar-collapse -->
+    </div>
+  </div><!--/.navigation -->
+
+  <div id="container">
+    <div id="map"></div>
+  </div>
+
+  <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Welcome to the BootLeaf template!</h4>
+        </div>
+        <div class="modal-body">
+          <div class="tab-content" id="aboutTabsContent">
+            <div class="tab-pane fade active in" id="about">
+              <p>A simple, responsive template for building web mapping applications with <a href="http://getbootstrap.com/">Bootstrap 3</a>, <a href="http://leafletjs.com/" target="_blank">Leaflet</a>, and <a href="http://twitter.github.io/typeahead.js/" target="_blank">typeahead.js</a>. Open source, MIT licensed, and available on <a href="https://github.com/bmcbride/bootleaf" target="_blank">GitHub</a>.</p>
+              <div class="panel panel-primary">
+                <div class="panel-heading">Features</div>
+                <ul class="list-group">
+                  <li class="list-group-item">Fullscreen mobile-friendly map template with responsive navbar and modal placeholders</li>
+                  <li class="list-group-item">jQuery loading of external GeoJSON files</li>
+                  <li class="list-group-item">Logical multiple layer marker clustering via the <a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank">leaflet marker cluster plugin</a></li>
+                  <li class="list-group-item">Elegant client-side multi-layer feature search with autocomplete using <a href="http://twitter.github.io/typeahead.js/" target="_blank">typeahead.js</a></li>
+                  <li class="list-group-item">Responsive sidebar feature list synced with map bounds, which includes sorting and filtering via <a href="http://listjs.com/" target="_blank">list.js</a></li>
+                  <li class="list-group-item">Marker icons included in grouped layer control via the <a href="https://github.com/ismyrnow/Leaflet.groupedlayercontrol" target="_blank">grouped layer control plugin</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</body>
+
+
+
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="/js/leaflet.js"></script>
+<script src="/js/L.Control.MousePosition.js"></script>
+
+<script src="/js/app.js"></script>
+
 <script type="text/javascript">
-
-  // Function to use X,Y coordinates instead of Y,X
-  var yx = L.latLng;
-  var xy = function(x, y) {
-      if (L.Util.isArray(x)) {    // When doing xy([x, y]);
-          return yx(-x[1], x[0]);
-      }
-      return yx(-y, x);  // -y because it's up to down and no down to up like by default
-  };
-
-  // Custom markers
-  var marker1 = L.marker(xy(3361,8872), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre un peu long parce qu\'il faut tester</b><br><em>Campement LCH</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
-  var marker2 = L.marker(xy(7958,14332), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
-  var marker3 = L.marker(xy(3568,7801), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
-
-  var marker4 = L.marker(xy(5120,6185), {icon: L.divIcon({className: 'icon-home green'})}).bindPopup('<b>Union</b><br><em>Campement principal</em>');
-  var marker5 = L.marker(xy(3376,8633), {icon: L.divIcon({className: 'icon-home green'})}).bindPopup('<b>Deutschland</b><br><em>Campement</em>');
-  // Define the Group of markers
-  var markers1 = L.layerGroup([marker1, marker2, marker3]);
-  var markers2 = L.layerGroup([marker4, marker5]);
-
-
-  // Map initializer
-  var map = L.map('mapid', {
-    crs: L.CRS.Simple,
-    minZoom: -5,
-    wheelPxPerZoomLevel: 150,
-    layers: [markers1, markers2]
-  });
-  var bounds = [xy(0,16410), xy(16410,0)];
-  var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
-  map.fitBounds(bounds);
-
   {{ range $key, $m := call .markers }}
-    var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{$m.Icon}} {{$m.Color}}'})}).addTo(map).bindPopup('<strong>{{ $m.Title }}</strong><br>{{ $m.Desc }}');
+    var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{$m.Icon}} {{$m.Color}}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
   {{ end }}
-
-
-
-  // Layers initializer
-  var overlayMaps = {
-    '<i class="icon-location blue"></i> Campements LCH': markers1,
-    '<i class="icon-home green"></i> Campements alliés': markers2
-  };
-
-  // Add Layers
-  L.control.layers(null, overlayMaps, {collapsed: false}).addTo(map);
-
-
-
-  // Mouse Position plugin
-  var mouse = L.control.mousePosition({
-    separator: ' , ',
-    emptyString: 'Positionnez la souris...',
-    lngFirst: true,
-    lngFormatter: function (longitude) { return Math.floor(L.Util.formatNum(longitude, this.numDigits)) },
-    latFormatter: function (latitude) { return Math.floor(L.Util.formatNum(-latitude, this.numDigits)) },
-    }).addTo(map);
 </script>
