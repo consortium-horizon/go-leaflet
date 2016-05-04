@@ -38,6 +38,8 @@ $(document).ready(function () {
     { html: '<i class="icon-right-dir-2"></i>', value: "icon-right-dir-2", group: "Géométrie" },
     { html: '<i class="icon-down-dir-2"></i>', value: "icon-down-dir-2", group: "Géométrie" },
     { html: '<i class="icon-left-dir-2"></i>', value: "icon-left-dir-2", group: "Géométrie" },
+    { html: '<i class="icon-cube"></i>', value: "icon-cube", group: "Géométrie" },
+    { html: '<i class="icon-cubes"></i>', value: "icon-cubes", group: "Géométrie" },
   ];
   // Define Default Index
   var ICON_SELECTED_INDEX = 0;
