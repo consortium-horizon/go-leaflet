@@ -1,6 +1,9 @@
 $(document).ready(function () {
   var icon_list = [
     { html: '<i class="icon-star"></i>', value: "icon-star" },
+    { html: '<i class="icon-tree"></i>', value: "icon-tree" },
+    { html: '<i class="icon-fire-1"></i>', value: "icon-fire-1" },
+    { html: '<i class="icon-snow"></i>', value: "icon-snow" },
     { html: '<i class="icon-home"></i>', value: "icon-home" },
     { html: '<i class="icon-heart"></i>', value: "icon-heart" },
     { html: '<i class="icon-star-half-alt"></i>', value: "icon-star-half-alt" },
@@ -58,6 +61,7 @@ $(document).ready(function () {
     { html: '<div class="fleft"><div class="square bgpurple"><div class="mlm lhm">Violet</div></div></div>', value: "purple" },
     { html: '<div class="fleft"><div class="square bgyellow"><div class="mlm lhm">Jaune</div></div></div>', value: "yellow" },
     { html: '<div class="fleft"><div class="square bgorange"><div class="mlm lhm">Orange</div></div></div>', value: "orange" },
+    { html: '<div class="fleft"><div class="square bgbrown"><div class="mlm lhm">Marron</div></div></div>', value: "brown" },
   ];
 
   // Define Default Index

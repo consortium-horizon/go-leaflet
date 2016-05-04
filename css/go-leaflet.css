@@ -81,6 +81,7 @@
 .yellow { color: #FFDC00; text-shadow: -1px 0 #806e00, 0 1px #806e00, 1px 0 #806e00, 0 -1px #806e00; }
 .purple { color: #7B11D0; text-shadow: -1px 0 #300752, 0 1px #300752, 1px 0 #300752, 0 -1px #300752; }
 .orange { color: #FFA500; text-shadow: -1px 0 #805300, 0 1px #805300, 1px 0 #805300, 0 -1px #805300; }
+.brown { color: #744b00; text-shadow: -1px 0 #3f2900, 0 1px #3f2900, 1px 0 #3f2900, 0 -1px #3f2900; }
 
 
 
@@ -94,3 +95,4 @@
 .bgyellow { background-color: #FFDC00; border: 1px solid #806e00; }
 .bgpurple { background-color: #7B11D0; border: 1px solid #300752; }
 .bgorange { background-color: #FFA500; border: 1px solid #805300; }
+.bgbrown { background-color: #744b00; border: 1px solid #3f2900; }
