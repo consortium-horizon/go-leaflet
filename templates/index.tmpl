@@ -1,43 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="/css/leaflet.css" >
-    <link rel="stylesheet" href="/css/fontello.css" >
-    <link rel="stylesheet" href="/css/go-leaflet.css" >
-    <link rel="stylesheet" href="/css/L.Control.MousePosition.css" >
-
-    <link rel="stylesheet" href="/css/app.css">
-
-    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon-76.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon-120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon-152.png">
-    <link rel="icon" sizes="196x196" href="/images/favicon-196.png">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-
-    <title>{{.title}}</title>
+  {{template "header.inc" . }}
 </head>
 
 
 <body>
-  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <div class="navbar-icon-container">
-          <a id="nav-btn" class="navbar-icon pull-right visible-xs" href="#"><i class="fa fa-bars fa-lg white"></i></a>
-          <a id="sidebar-toggle-btn" class="navbar-icon pull-right visible-xs" href="#"><i class="fa fa-search fa-lg white"></i></a>
-        </div>
-        <a href="#" class="navbar-brand">{{.title}}</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="#"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;A propos</a></li>
-          <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="/markers"><i class="fa fa-cog white"></i>&nbsp;&nbsp;Marqueurs</a></li>
-          <li><a id="full-extent-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="#"><i class="fa fa-arrows-alt white"></i>&nbsp;&nbsp;Réinitialiser le zoom</a></li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
-  </div><!--/.navigation -->
+  {{template "navigation.inc" . }}
 
   <div id="container">
     <div id="map"></div>
@@ -79,16 +48,13 @@
 
 
 
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-<script src="/js/leaflet.js"></script>
-<script src="/js/L.Control.MousePosition.js"></script>
+  {{template "script.inc" . }}
 
-<script src="/js/app.js"></script>
+  <script type="text/javascript">
+    {{ range $key, $m := call .markers }}
+      var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{$m.Icon}} {{$m.Color}}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
+    {{ end }}
+  </script>
 
-<script type="text/javascript">
-  {{ range $key, $m := call .markers }}
-    var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{$m.Icon}} {{$m.Color}}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
-  {{ end }}
-</script>
+</html>
