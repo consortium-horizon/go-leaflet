@@ -149,7 +149,6 @@ func main() {
     router.LoadHTMLGlob("templates/*")
     router.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "index.tmpl", gin.H{
-            "title": "go-leaflet",
             "markers": markers,
         })
     })
@@ -160,9 +159,15 @@ func main() {
         "admin":   "lch",
     }))
 
-    authorized.GET("/", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "markers.tmpl", gin.H{
-            "title": "Marqueurs",
+    authorized.GET("/new", func(c *gin.Context) {
+        c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
+            "title": "Ajouter un marqueur",
+            "markers": markers,
+        })
+    })
+    authorized.GET("/manage", func(c *gin.Context) {
+        c.HTML(http.StatusOK, "markers-manage.tmpl", gin.H{
+            "title": "Modifier les marqueurs",
             "markers": markers,
         })
     })
