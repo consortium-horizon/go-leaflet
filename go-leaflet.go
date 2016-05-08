@@ -17,8 +17,14 @@ type  Marker struct {
     Y int
     Title string
     Desc string
+    Group string
+}
+
+type Group struct {
+    Name string
+    Desc string
     Color string
-    Icon string
+    Icon string   
 }
 
 func (d *Marker) GobEncode() ([]byte, error) {
@@ -40,11 +46,7 @@ func (d *Marker) GobEncode() ([]byte, error) {
     if err!=nil {
         return nil, err
     }
-    err = encoder.Encode(d.Color)
-    if err!=nil {
-        return nil, err
-    }
-    err = encoder.Encode(d.Icon)
+    err = encoder.Encode(d.Group)
     if err!=nil {
         return nil, err
     }
@@ -63,6 +65,42 @@ func (d *Marker) GobDecode(buf []byte) error {
         return err
     }
     err = decoder.Decode(&d.Title)
+    if err!=nil {
+        return err
+    }
+    err = decoder.Decode(&d.Group)
+    if err!=nil {
+        return err
+    }
+    return decoder.Decode(&d.Group)
+}
+
+func (d *Group) GobEncode() ([]byte, error) {
+    w := new(bytes.Buffer)
+    encoder := gob.NewEncoder(w)
+    err := encoder.Encode(d.Name)
+    if err!=nil {
+        return nil, err
+    }
+    err = encoder.Encode(d.Desc)
+    if err!=nil {
+        return nil, err
+    }
+    err = encoder.Encode(d.Color)
+    if err!=nil {
+        return nil, err
+    }
+    err = encoder.Encode(d.Icon)
+    if err!=nil {
+        return nil, err
+    }
+    return w.Bytes(), nil
+}
+
+func (d *Group) GobDecode(buf []byte) error {
+    r := bytes.NewBuffer(buf)
+    decoder := gob.NewDecoder(r)
+    err := decoder.Decode(&d.Name)
     if err!=nil {
         return err
     }
@@ -99,6 +137,28 @@ func (m* Marker) WriteToDBWithKey(key string) error {
     return err
 }
 
+func (m* Group) WriteToDB() error {
+    keybase := "group"
+    index := 0
+    key := keybase + strconv.Itoa(index)
+    db := initDB()
+    for db.Has(key) {
+        index++
+        key = keybase + strconv.Itoa(index)
+    }
+    return m.WriteToDBWithKey(key)
+}
+
+func (m* Group) WriteToDBWithKey(key string) error {
+    db := initDB()
+    valueasBytes, err := m.GobEncode()
+    if err!=nil {
+        fmt.Println("%v",err)
+    }
+    db.Write(key, valueasBytes )
+    return err
+}
+
 func markers() map[int]Marker {
     markers := make(map[int]Marker)
     db := initDB()
@@ -116,6 +176,25 @@ func markers() map[int]Marker {
         }
     }
     return markers
+}
+
+func groups() map[int]Group {
+    groups := make(map[int]Group)
+    db := initDB()
+    keybase := "group"
+    var err error
+    keys := db.KeysPrefix(keybase, nil)
+    for key := range keys {
+        var valueread []byte
+        valueread, err = db.Read(key)
+        index,_ := strconv.Atoi(strings.TrimPrefix(key, keybase))
+        if err==nil{
+            var m Group
+            err = m.GobDecode(valueread)
+            groups[index] = m
+        }
+    }
+    return groups
 }
 
 func initDB() *diskv.Diskv {
@@ -151,6 +230,7 @@ func main() {
         c.HTML(http.StatusOK, "index.tmpl", gin.H{
             "markers": markers,
             "ZoomReset": true,
+            "groups": groups,
         })
     })
 
@@ -170,6 +250,7 @@ func main() {
         c.HTML(http.StatusOK, "markers-manage.tmpl", gin.H{
             "title": "Modifier les marqueurs",
             "markers": markers,
+            "groups": groups,
         })
     })
 
@@ -178,14 +259,13 @@ func main() {
         desc := c.PostForm("desc")
         x, err := strconv.Atoi(c.PostForm("x"))
         y, err := strconv.Atoi(c.PostForm("y"))
-        color := c.PostForm("color")
-        icon := c.PostForm("icon")
+        group := c.PostForm("group")
         if err!=nil {
             fmt.Printf("%v",err)
             return
         }
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v; color: %v; icon:%v", title, desc, x, y, color, icon)
-        m := Marker{Title:title, Desc: desc, X: x, Y: y, Color: color, Icon: icon }
+        m := Marker{Title:title, Desc: desc, X: x, Y: y, Group: group }
         m.WriteToDB()
         c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
     })
@@ -202,15 +282,14 @@ func main() {
         desc := c.PostForm("desc")
         x, err := strconv.Atoi(c.PostForm("x"))
         y, err := strconv.Atoi(c.PostForm("y"))
-        color := c.PostForm("color")
-        icon := c.PostForm("icon")
+        group := c.PostForm("group")
         key := c.PostForm("key")
         if err!=nil {
             fmt.Printf("%v",err)
             return
         }
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
-        m := Marker{Title:title, Desc: desc, X: x, Y: y, Color: color, Icon: icon }
+        m := Marker{Title:title, Desc: desc, X: x, Y: y, Group: group }
         m.WriteToDBWithKey(key)
         c.Request.Header.Get("Referer")
         c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
@@ -221,15 +300,15 @@ func main() {
 
     // /admin/secrets endpoint
     // hit "localhost:8080/admin/secrets
-    authorized.GET("/secrets", func(c *gin.Context) {
-        // get user, it was set by the BasicAuth middleware
-        user := c.MustGet(gin.AuthUserKey).(string)
-        if secret, ok := secrets[user]; ok {
-            c.JSON(http.StatusOK, gin.H{"user": user, "secret": secret})
-        } else {
-            c.JSON(http.StatusOK, gin.H{"user": user, "secret": "NO SECRET :("})
-        }
-    })
+    // authorized.GET("/secrets", func(c *gin.Context) {
+    //     // get user, it was set by the BasicAuth middleware
+    //     user := c.MustGet(gin.AuthUserKey).(string)
+    //     if secret, ok := secrets[user]; ok {
+    //         c.JSON(http.StatusOK, gin.H{"user": user, "secret": secret})
+    //     } else {
+    //         c.JSON(http.StatusOK, gin.H{"user": user, "secret": "NO SECRET :("})
+    //     }
+    // })
     
     router.Run(":8080")
 }
