@@ -68,7 +68,7 @@ func (d *Marker) GobDecode(buf []byte) error {
     if err!=nil {
         return err
     }
-    err = decoder.Decode(&d.Group)
+    err = decoder.Decode(&d.Desc)
     if err!=nil {
         return err
     }
@@ -197,6 +197,7 @@ func groups() map[int]Group {
     return groups
 }
 
+
 func initDB() *diskv.Diskv {
     // Simplest transform function: put all the data files into the base dir.
     flatTransform := func(s string) []string { return []string{} }
@@ -260,6 +261,7 @@ func main() {
         x, err := strconv.Atoi(c.PostForm("x"))
         y, err := strconv.Atoi(c.PostForm("y"))
         group := c.PostForm("group")
+        fmt.Printf("%v",group)
         if err!=nil {
             fmt.Printf("%v",err)
             return
@@ -269,7 +271,25 @@ func main() {
         m.WriteToDB()
         c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
     })
+    authorized.POST("/addgroup", func(c *gin.Context) {
+        name := c.PostForm("name")
+        desc := c.PostForm("desc")
+        color := c.PostForm("color")
+        icon := c.PostForm("icon")
+        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v; color: %v; icon:%v", title, desc, x, y, color, icon)
+        g := Group{Name:name, Desc: desc, Color:color, Icon:icon }
+        g.WriteToDB()
+        c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+    })
+
     authorized.POST("/delete", func(c *gin.Context) {
+        key := c.PostForm("key")
+        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
+        db := initDB();
+        db.Erase(key)
+        c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+    })
+    authorized.POST("/deletegroup", func(c *gin.Context) {
         key := c.PostForm("key")
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
         db := initDB();
