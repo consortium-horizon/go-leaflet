@@ -271,14 +271,14 @@
 .icon-down-circled:before { content: '\e8d5'; } /* '' */
 .icon-cw:before { content: '\e8d6'; } /* '' */
 .icon-ccw:before { content: '\e8d7'; } /* '' */
-.icon-arrows-cw:before { content: '\e8d8'; } /* '' */
+.icon-arrows-cw:before, .icon-refresh:before { content: '\e8d8'; } /* '' */
 .icon-level-up:before { content: '\e8d9'; } /* '' */
 .icon-level-down:before { content: '\e8da'; } /* '' */
 .icon-shuffle:before { content: '\e8db'; } /* '' */
 .icon-exchange:before { content: '\e8dc'; } /* '' */
 .icon-history:before { content: '\e8dd'; } /* '' */
-.icon-expand:before { content: '\e8de'; } /* '' */
-.icon-collapse:before { content: '\e8df'; } /* '' */
+.icon-expand:before, .icon-chevron-down:before { content: '\e8de'; } /* '' */
+.icon-collapse:before, .icon-chevron-up:before { content: '\e8df'; } /* '' */
 .icon-expand-right:before { content: '\e8e0'; } /* '' */
 .icon-collapse-left:before { content: '\e8e1'; } /* '' */
 .icon-play:before { content: '\e8e2'; } /* '' */

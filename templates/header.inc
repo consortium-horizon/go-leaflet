@@ -22,6 +22,9 @@
 <link rel="stylesheet" href="http://www.jqwidgets.com/public/jqwidgets/styles/jqx.base.css" type="text/css">
 <link rel="stylesheet" href="http://www.jqwidgets.com/public/jqwidgets/styles/jqx.bootstrap.css" type="text/css">
 
+<!-- Bootstrap Table -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+
 <!-- Leaflet & Plugins -->
 <link rel="stylesheet" href="/css/leaflet.css">
 <link rel="stylesheet" href="/css/fontello.css">

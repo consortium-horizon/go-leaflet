@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{template "header.inc" . }}
+</head>
+<body>
+  {{template "navigation.inc" . }}
+  <div class="col-lg-2"></div>
+  <div class="col-lg-8">
+    <h1>{{.title}}</h1>
+
+      <div class="row">
+        <form action="/addgroup" method="post" class="form-horizontal col-lg-12">
+          <fieldset>
+            <legend>Ajouter un type :</legend>
+
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="icon" class="col-lg-5 control-label">Icone :</label>
+                <div class="col-lg-7">
+                  <div id='icon'></div>
+                  <input type="hidden" name="icon" id="icon-field">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="color" class="col-lg-5 control-label">Couleur :</label>
+                <div class="col-lg-7">
+                  <div id='color'></div>
+                  <input type="hidden" name="color" id="color-field">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="inputGName" class="col-lg-3 control-label">Nom :</label>
+                <div class="col-lg-9">
+                  <input type="text" name="name" id="inputGName" class="form-control" required="true">
+                </div>
+              </div>
+            </div>
+
+
+            <!--
+              <div class="form-group">
+                <label for="inputGDesc" class="col-lg-3 control-label">Description :</label>
+                <div class="col-lg-9">
+                  <input type="text" name="desc" id="inputGDesc" class="form-control">
+                </div>
+              </div>
+            -->
+            <div class="form-group">
+              <div class="col-lg-6 col-lg-offset-4 mts mbm">
+                <a href="/" class="btn btn-default">Retour sur la carte</a>
+                <!--<button type="reset" class="btn btn-default">Annuler</button>-->
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <table class="table table-hover"
+          data-toggle="table"
+          data-striped="true"
+          data-pagination="true"
+          data-search="true"
+          data-show-columns="true"
+          data-show-refresh="true"
+          data-show-toggle="true"
+          data-show-pagination-switch="true"
+          data-id-field="id"
+        >
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Icone</th>
+              <th>Nom</th>
+              <!--<th>Description</th>-->
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range $key, $m := call .groups }}
+              <tr>
+                <td>{{ $key }}</td>
+                <td><i class="{{ $m.Color }} {{ $m.Icon }}"></i></td>
+                <td>{{ $m.Name }}</td>
+                <!--<td>{{ $m.Desc }}</td>-->
+                <td>
+                  <form class="form-inline" action="deletegroup" method="post">
+                    <fieldset>
+                      <input type="hidden" name="key" value="group{{$key}}">
+                      <input type="submit" value="X">
+                      <a href="#"><i class="icon-pencil black"></i></a>
+                   </fieldset>
+                  </form>
+                </td>
+              </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-2"></div>
+</body>
+
+  {{template "script.inc" . }}
+
+  <script type="text/javascript">
+    {{ template "markers.inc" . }}
+  </script>
+</html>

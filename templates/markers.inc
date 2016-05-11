@@ -42,12 +42,10 @@ $(document).ready(function () {
     { html: '<i class="icon-cube"></i>', value: "icon-cube", group: "Géométrie" },
     { html: '<i class="icon-cubes"></i>', value: "icon-cubes", group: "Géométrie" },
   ];
-  // Define Default Index
-  var ICON_SELECTED_INDEX = 0;
   // Create a jqxDropDownList
   $("#icon").jqxDropDownList({
     theme: 'bootstrap',
-    selectedIndex: ICON_SELECTED_INDEX,
+    selectedIndex: 0,
     source: icon_list,
     width: '100%',
     height: '35px'
@@ -56,7 +54,12 @@ $(document).ready(function () {
   $('#icon').on('select', function (event){
     $('#icon-field').val(event.args.item.value);
   });
-  $('#icon-field').val(icon_list[ICON_SELECTED_INDEX].value);
+  // Set the default state of icon field
+  $('#icon-field').val(icon_list[$("#icon").jqxDropDownList('getSelectedIndex')].value);
+
+
+
+
 
   // Create the "color select"
   var color_list = [
@@ -72,12 +75,10 @@ $(document).ready(function () {
     { html: '<div class="fleft"><div class="square bgbrown"><div class="mlm lhm">Marron</div></div></div>', value: "brown" },
   ];
 
-  // Define Default Index
-  var COLOR_SELECTED_INDEX = 0;
   // Create a jqxDropDownList
   $("#color").jqxDropDownList({
     theme: 'bootstrap',
-    selectedIndex: COLOR_SELECTED_INDEX,
+    selectedIndex: 0,
     source: color_list,
     width: '100%',
     height: '35px'
@@ -86,22 +87,25 @@ $(document).ready(function () {
   $('#color').on('select', function (event){
     $('#color-field').val(event.args.item.value);
   });
-  $('#color-field').val(color_list[COLOR_SELECTED_INDEX].value);
+  // Set the default state of color field
+  $('#color-field').val(color_list[$("#color").jqxDropDownList('getSelectedIndex')].value);
 
 
 
-  // Create the "group select"
+
+
+
+
+  // Create the "type select"
   var group_list = [
     {{ range $key, $g := call .groups }}
-      { html: '<i class="{{$g.Icon}} {{$g.Color}}"></i> {{$g.Name}}', value: "group{{$key}}" },
+      { html: '<i class="{{$g.Icon}} {{$g.Color}}"></i> {{$g.Name}}', value: "group{{$key}}", GroupName: "{{$g.Name}}" },
     {{ end }}
   ];
-  // Define Default Index
-  var GROUP_SELECTED_INDEX = 0;
   // Create a jqxDropDownList
   $("#group").jqxDropDownList({
     theme: 'bootstrap',
-    selectedIndex: GROUP_SELECTED_INDEX,
+    selectedIndex: 0,
     source: group_list,
     width: '100%',
     height: '35px'
@@ -109,7 +113,14 @@ $(document).ready(function () {
   // Select value of an item
   $('#group').on('select', function (event){
     $('#group-field').val(event.args.item.value);
+    $('#inputTitle').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].GroupName);
+
+    //$('#group-field').attr('Gname', group_list[GROUP_SELECTED_INDEX].Gname);
+    //$('#inputTitle').val($('#group-field').attr('Gname'));
+    
   });
-  $('#group-field').val(group_list[GROUP_SELECTED_INDEX].value);
+  // Set the default state of group & inputTitle field
+  $('#group-field').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].value);
+  $('#inputTitle').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].GroupName);
 
 });

@@ -290,7 +290,7 @@ func main() {
     router.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "index.tmpl", gin.H{
             "markers": markers,
-            "ZoomReset": true,
+            "onMap": true,
             "groups": groups,
         })
     })
@@ -308,9 +308,16 @@ func main() {
             "groups": groups,
         })
     })
-    authorized.GET("/manage", func(c *gin.Context) {
+    authorized.GET("/", func(c *gin.Context) {
         c.HTML(http.StatusOK, "markers-manage.tmpl", gin.H{
-            "title": "Modifier les marqueurs",
+            "title": "Liste des marqueurs",
+            "markers": markers,
+            "groups": groups,
+        })
+    })
+    authorized.GET("../groups", func(c *gin.Context) {
+        c.HTML(http.StatusOK, "groups-manage.tmpl", gin.H{
+            "title": "Liste des types de marqueurs",
             "markers": markers,
             "groups": groups,
         })

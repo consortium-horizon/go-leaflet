@@ -8,7 +8,22 @@
 <script type="text/javascript" src="http://www.jqwidgets.com/public/jqwidgets/jqxcore.js"></script>
 <script type="text/javascript" src="http://www.jqwidgets.com/public/jqwidgets/jqx-all.js"></script>
 
+<!-- Bootstrap Table -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/locale/bootstrap-table-fr-FR.min.js"></script>
+
 <!-- Leaflet & Plugins -->
 <script src="/js/leaflet.js"></script>
 <script src="/js/L.Control.MousePosition.js"></script>
-<script src="/js/app.js"></script>
+{{ if .onMap }}
+  <script src="/js/app.js"></script>
+{{ end }}
+
+<script type="text/javascript">
+  // Modal control
+    $("#about-btn").click(function() {
+      $("#aboutModal").modal("show");
+      $(".navbar-collapse.in").collapse("hide");
+      return false;
+    });
+</script>

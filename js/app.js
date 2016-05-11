@@ -1,11 +1,3 @@
-// Modal control
-  $("#about-btn").click(function() {
-    $("#aboutModal").modal("show");
-    $(".navbar-collapse.in").collapse("hide");
-    return false;
-  });
-
-
 // Function to use X,Y coordinates instead of Y,X
   var yx = L.latLng;
   var xy = function(x, y) {
@@ -23,6 +15,7 @@
     return false;
   });
 
+/*
 // Custom markers (for testing)
   var cmarker1 = L.marker(xy(3361,8872), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre un peu long parce qu\'il faut tester</b><br><em>Campement LCH</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
   var cmarker2 = L.marker(xy(7958,14332), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
@@ -34,14 +27,14 @@
     var cmarkers1 = L.layerGroup([cmarker1, cmarker2]);
     cmarkers1.addLayer(cmarker3);
     var cmarkers2 = L.layerGroup([cmarker4, cmarker5]);
-
+*/
 
 // Map initializer
   var map = L.map('map', {
     crs: L.CRS.Simple,
     minZoom: -4.6,
     wheelPxPerZoomLevel: 150,
-    layers: [cmarkers1, cmarkers2],
+    //layers: [cmarkers1, cmarkers2],
     zoomControl: false,
     attributionControl: false
   });
@@ -49,16 +42,17 @@
   var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
   map.fitBounds(bounds);
 
-
+/*
 // Layers initializer
   var overlayMaps = {
     '<i class="icon-location blue"></i> Campements LCH': cmarkers1,
     '<i class="icon-home green"></i> Campements alliés': cmarkers2
   };
-
+*/
+/*
 // Add Layers
   L.control.layers(null, overlayMaps, {collapsed: false}).addTo(map);
-
+*/
 
 // Mouse Position plugin
   var mouse = L.control.mousePosition({

@@ -9,12 +9,22 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="#"><i class="icon-help-circled white"></i>&nbsp;&nbsp;A propos</a></li>
-        <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="/markers/new"><i class="icon-plus white"></i>&nbsp;&nbsp;Ajouter un marqueur</a></li>
-        <li><a id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="/markers/manage"><i class="icon-pencil white"></i>&nbsp;&nbsp;Modifier les marqueurs</a></li>
-        {{ if .ZoomReset }}
-          <li><a id="full-extent-btn" data-target=".navbar-collapse.in" data-toggle="collapse" href="#"><i class="icon-resize-small-2 white"></i>&nbsp;&nbsp;Réinitialiser le zoom</a></li>
-        {{ end }}
+        
+        <li><a href="/markers/new" data-target=".navbar-collapse.in" data-toggle="collapse" ><i class="icon-plus white"></i>&nbsp;&nbsp;Ajouter un marqueur</a></li>
+
+        <li class="dropdown">
+          <a id="editDrop" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="icon-wrench white"></i>&nbsp;&nbsp;Outils <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/markers" data-target=".navbar-collapse.in" data-toggle="collapse"><i class="icon-th-list"></i>&nbsp;&nbsp;Afficher tous les marqueurs</a></li>
+            <li><a href="/groups" data-target=".navbar-collapse.in" data-toggle="collapse"><i class="icon-cog"></i>&nbsp;&nbsp;Paramétrer les marqueurs</a></li>
+            {{ if .onMap }}
+              <li><a href="#" id="full-extent-btn" data-target=".navbar-collapse.in" data-toggle="collapse"><i class="icon-resize-small-2"></i>&nbsp;&nbsp;Réinitialiser le zoom</a></li>
+            {{ end }}
+          </ul>
+        </li>    
+        
+
+        <li><a href="#" id="about-btn" data-target=".navbar-collapse.in" data-toggle="collapse" ><i class="icon-help-circled white"></i>&nbsp;&nbsp;A propos</a></li>
       </ul>
     </div><!--/.navbar-collapse -->
   </div>
@@ -25,7 +35,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Welcome to the BootLeaf template!</h4>
+        <p class="modal-title">Welcome to the BootLeaf template!</p>
       </div>
       <div class="modal-body">
         <div class="tab-content" id="aboutTabsContent">

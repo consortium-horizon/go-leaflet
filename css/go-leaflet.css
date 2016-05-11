@@ -37,6 +37,12 @@
 }
 
 
+/* BOOTSTRAP OVERRIDE */
+.modal-title {
+  font-size: 20px;
+}
+
+
 
 /* STYLE */
 .markers {
@@ -49,12 +55,10 @@
 .fleft {
   float: left;
 }
-.mlm {
-  margin-left: 30px;
-}
-.lhm {
-  line-height: 20px;
-}
+.mlm { margin-left: 30px; }
+.mts { margin-top: 15px; }
+.mbm { margin-bottom: 30px; }
+.lhm { line-height: 20px; }
 
 
 

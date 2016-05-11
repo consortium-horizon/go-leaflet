@@ -16,42 +16,40 @@
         <fieldset>
           <legend>Ajouter un marqueur :</legend>
           <div class="form-group">
+            <label for="group" class="col-lg-3 control-label">Type :</label>
+            <div class="col-lg-9">
+              <div id='group'></div>
+              <input type="hidden" name="group" id="group-field">
+            </div>
+          </div>
+          <div class="form-group">
             <label for="inputTitle" class="col-lg-3 control-label">Titre :</label>
             <div class="col-lg-9">
-              <input type="text" name="title" id="inputTitle" class="form-control">
+              <input type="text" name="title" id="inputTitle" class="form-control" required="true" aria-describedby="helpBlock">
+              <span id="helpBlock" class="help-block">Ce champ peut être modifié à votre convenance.</span>
             </div>
           </div>
           <div class="form-group">
             <label for="inputDesc" class="col-lg-3 control-label">Description :</label>
             <div class="col-lg-9">
-              <input type="text" name="desc" id="inputDesc" class="form-control">
+              <input type="text" name="desc" id="inputDesc" class="form-control" aria-describedby="helpBlock2">
+              <span id="helpBlock2" class="help-block"><em>Champ facultatif</em></span>
             </div>
           </div>
           <div class="form-group">
             <label for="inputX" class="col-lg-3 control-label">Coord. X :</label>
             <div class="col-lg-9">
-              <input type="text" name="x" id="inputX" class="form-control">
+              <input type="number" name="x" id="inputX" class="form-control" required="true">
             </div>
           </div>
           <div class="form-group">
             <label for="inputY" class="col-lg-3 control-label">Coord. Y :</label>
             <div class="col-lg-9">
-              <input type="text" name="y" id="inputY" class="form-control">
+              <input type="number" name="y" id="inputY" class="form-control" required="true">
             </div>
           </div>
           <div class="form-group">
-            <label for="groupname" class="col-lg-3 control-label">Groupe:</label>
-            <div class="col-lg-9">
-            <select class="form-control" id="groupname" name="group">
-            {{ range $key, $g := call .groups }}
-              <option value="group{{$key}}">{{$key}}: {{$g.Name}}</option>
-            {{ end }}
-            </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-lg-6 col-lg-offset-3">
-              <a href="/" class="button">Retour sur la carte</a>
+            <div class="col-lg-6 col-lg-offset-6">
               <button type="reset" class="btn btn-default">Annuler</button>
               <button type="submit" class="btn btn-primary">Ajouter</button>
             </div>
@@ -59,46 +57,48 @@
         </fieldset>
       </form>
       </div>
+
       <div class="row">
-      <form action="addgroup" method="post" class="form-horizontal col-lg-9">
-        <fieldset>
-          <legend>Ajouter un groupe :</legend>
-          <div class="form-group">
-            <label for="inputGName" class="col-lg-3 control-label">Titre :</label>
-            <div class="col-lg-9">
-              <input type="text" name="name" id="inputTitle" class="form-control">
+        <form action="addgroup" method="post" class="form-horizontal col-lg-9">
+          <fieldset>
+            <legend>Ajouter un type :</legend>
+            <div class="form-group">
+              <label for="icon" class="col-lg-3 control-label">Icone :</label>
+              <div class="col-lg-9">
+                <div id='icon'></div>
+                <input type="hidden" name="icon" id="icon-field">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="inputDesc" class="col-lg-3 control-label">Description :</label>
-            <div class="col-lg-9">
-              <input type="text" name="desc" id="inputDesc" class="form-control">
+            <div class="form-group">
+              <label for="color" class="col-lg-3 control-label">Couleur :</label>
+              <div class="col-lg-9">
+                <div id='color'></div>
+                <input type="hidden" name="color" id="color-field">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="color" class="col-lg-3 control-label">Couleur :</label>
-            <div class="col-lg-9">
-              <div id='color'></div>
-              <input type="hidden" name="color" id="color-field">
+            <div class="form-group">
+              <label for="inputGName" class="col-lg-3 control-label">Nom :</label>
+              <div class="col-lg-9">
+                <input type="text" name="name" id="inputGName" class="form-control" required="true">
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="icon" class="col-lg-3 control-label">Icone :</label>
-            <div class="col-lg-9">
-              <div id='icon'></div>
-              <input type="hidden" name="icon" id="icon-field">
+            <!--
+              <div class="form-group">
+                <label for="inputGDesc" class="col-lg-3 control-label">Description :</label>
+                <div class="col-lg-9">
+                  <input type="text" name="desc" id="inputGDesc" class="form-control">
+                </div>
+              </div>
+            -->
+            <div class="form-group">
+              <div class="col-lg-6 col-lg-offset-6">
+                <button type="reset" class="btn btn-default">Annuler</button>
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-lg-6 col-lg-offset-3">
-              <a href="/" class="button">Retour sur la carte</a>
-              <button type="reset" class="btn btn-default">Annuler</button>
-              <button type="submit" class="btn btn-primary">Ajouter</button>
-            </div>
-          </div>
-        </fieldset>
-      </form>
-    </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
     <div class="col-lg-2"></div>
   </div>
@@ -106,6 +106,10 @@
 
 
 
-  {{template "script.inc" . }}
-  <script src="/js/markers.js"></script>
+  {{ template "script.inc" . }}
+
+  <script type="text/javascript">
+    {{ template "markers.inc" . }}
+  </script>
+
 </html>
