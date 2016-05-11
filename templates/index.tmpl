@@ -26,10 +26,27 @@
 
   {{template "script.inc" . }}
 
+
+
   <script type="text/javascript">
-    {{ range $key, $m := call .markers }}
-      var marker = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{$m.Icon}} {{$m.Color}}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
-    {{ end }}
+  {{ range $key, $g := call .groups -}}
+    var group{{$g.GetName}} = L.layerGroup();
+  {{- end }}
+    {{ range $key, $m := call .markers -}}
+    var marker{{$m.GetTitle}} = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{ $m.GetColor }} {{ $m.GetIcon }}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
+    group{{$m.GetGroupName}}.addLayer(marker{{$m.GetTitle}});
+    {{- end }}
+    {{ range $key, $g := call .groups -}}
+    map.addLayer(group{{$g.GetName}});
+    {{- end }}
+
+    // Layers initializer
+  var overlays = {
+    {{ range $key, $g := call .groups -}}
+    '<i class="{{$g.Icon}} {{$g.Color}}"></i> {{$g.Name}}': group{{$g.GetName}},
+    {{- end }}
+  };
+  L.control.layers(null, overlays, {collapsed: false}).addTo(map);
   </script>
 
 </html>

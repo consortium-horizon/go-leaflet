@@ -3,7 +3,7 @@ package main
 import (
     "github.com/gin-gonic/gin"
     "net/http"
-    // "html/template"
+    "html/template"
     "strings"
     "github.com/peterbourgon/diskv"
     "fmt"
@@ -20,11 +20,71 @@ type  Marker struct {
     Group string
 }
 
+func (m Marker) GetColor() template.JS {
+    db := initDB()
+    var err error
+    var valueread []byte
+    valueread, err = db.Read(m.Group)
+    if err==nil{
+        var g Group
+        err = g.GobDecode(valueread)
+        return template.JS(g.Color)
+    }
+    return "black"
+}
+
+func (m Marker) GetIcon() template.JS {
+    db := initDB()
+    var err error
+    var valueread []byte
+    valueread, err = db.Read(m.Group)
+    if err==nil{
+        var g Group
+        err = g.GobDecode(valueread)
+        return template.JS(g.Icon)
+    }
+    return "icon-flag"
+}
+
+func (m Marker) GetGroupName() template.JS {
+    db := initDB()
+    var err error
+    var valueread []byte
+    valueread, err = db.Read(m.Group)
+    if err==nil{
+        var g Group
+        err = g.GobDecode(valueread)
+        return template.JS(strings.Replace(g.Name, " ", "", -1))
+    }
+    return "Unknow Group"
+}
+
+func (m Marker) GetTitle() template.JS {
+    return template.JS(strings.Replace(m.Title, " ", "", -1))
+}
+
+func (m Marker) GetGroup() Group {
+    db := initDB()
+    var err error
+    var valueread []byte
+    valueread, err = db.Read(m.Group)
+    var g Group
+    if err==nil{
+        err = g.GobDecode(valueread)
+        return g
+    }
+    return g
+}
+
 type Group struct {
     Name string
     Desc string
     Color string
     Icon string   
+}
+
+func (g Group) GetName() template.JS {
+    return template.JS(strings.Replace(g.Name, " ", "", -1))
 }
 
 func (d *Marker) GobEncode() ([]byte, error) {
@@ -245,6 +305,7 @@ func main() {
         c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
             "title": "Ajouter un marqueur",
             "markers": markers,
+            "groups": groups,
         })
     })
     authorized.GET("/manage", func(c *gin.Context) {

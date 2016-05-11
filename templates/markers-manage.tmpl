@@ -13,7 +13,7 @@
         <table class="table table-hover">
           <tr>
           <th>#</th>
-          <th>Icone</th>
+          <th>Groupe</th>
           <th>Titre</th>
           <th>Description</th>
           <th>Coordonnnées (X,Y)</th>
@@ -22,7 +22,7 @@
           {{ range $key, $m := call .markers }}
             <tr>
               <td>{{ $key }}</td>
-              <td><i class="{{ $m.Icon }} {{ $m.Color }}"></i></td>
+              <td>{{ $m.GetGroupName }} <i class="{{ $m.GetColor }} {{ $m.GetIcon }}"></i></td>
               <td>{{ $m.Title }}</td>
               <td>{{ $m.Desc }}</td>
               <td>{{ $m.X }},{{ $m.Y }}</td>
@@ -30,6 +30,37 @@
                 <form class="form-inline" action="delete" method="post">
                   <fieldset>
                     <input type="hidden" name="key" value="marker{{$key}}">
+                    <input type="submit" value="X">
+                    <a href="#"><i class="icon-pencil black"></i></a>
+                 </fieldset>
+                </form>
+              </td>
+            </tr>
+          {{ end }}
+        </table>
+      </div>
+    </div>
+    <h1>Groups</h1>
+    <div class="row">
+      <div class="col-lg-12">
+        <table class="table table-hover">
+          <tr>
+          <th>#</th>
+          <th>Icone</th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Action</th>
+          </tr>
+          {{ range $key, $m := call .groups }}
+            <tr>
+              <td>{{ $key }}</td>
+              <td><i class="{{ $m.Color }} {{ $m.Icon }}"></i></td>
+              <td>{{ $m.Name }}</td>
+              <td>{{ $m.Desc }}</td>
+              <td>
+                <form class="form-inline" action="deletegroup" method="post">
+                  <fieldset>
+                    <input type="hidden" name="key" value="group{{$key}}">
                     <input type="submit" value="X">
                     <a href="#"><i class="icon-pencil black"></i></a>
                  </fieldset>
