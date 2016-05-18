@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <div class="navbar-icon-container">
-        <a id="nav-btn" class="navbar-icon pull-right visible-xs" href="#"><i class="icon-bars icon-lg white"></i></a>
+        <a id="nav-btn" class="navbar-icon pull-right visible-xs" href="#"><span class="glyphicon glyphicon-th-list white" aria-hidden="true"></span></a>
         <a id="sidebar-toggle-btn" class="navbar-icon pull-right visible-xs" href="#"><i class="icon-search icon-lg white"></i></a>
       </div>
       <a href="/" class="navbar-brand">GameMap</a>
