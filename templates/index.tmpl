@@ -34,7 +34,15 @@
     {{- end }}
 
     {{ range $key, $m := call .markers -}}
-      var marker{{$m.GetTitle}} = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{ $m.GetColor }} {{ $m.GetIcon }}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
+      var marker{{$m.GetTitle}} = L.marker(xy([{{$m.X}}, {{$m.Y}}]), {icon: L.divIcon({className: '{{ $m.GetColor }} {{ $m.GetIcon }}'})}).addTo(map).bindPopup('<b>{{ $m.Title }}</b><br><em>{{ $m.Desc }}</em><br>\
+        <form class="form-inline" action="markers/delete" method="post">\
+          <input type="hidden" name="key" value="marker{{$key}}">\
+          <button class="btn btn-link btn-xs" type="submit">supprimer</button>\
+        </form>\
+        <form class="form-inline" action="markers/edit" method="post">\
+          <input type="hidden" name="key" value="marker{{$key}}">\
+          <button class="btn btn-link btn-xs" type="submit">editer</button>\
+        </form> ');
       group{{$m.GetGroupName}}.addLayer(marker{{$m.GetTitle}});
     {{- end }}
 

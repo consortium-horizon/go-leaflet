@@ -238,6 +238,19 @@ func markers() map[int]Marker {
     return markers
 }
 
+func getMarker(key string) *Marker {
+    db := initDB()
+    var err error
+    var valueread []byte
+    valueread, err = db.Read(key)
+    if err==nil{
+        var m Marker
+        err = m.GobDecode(valueread)
+        return &m
+    }
+    return nil
+}
+
 func groups() map[int]Group {
     groups := make(map[int]Group)
     db := initDB()
@@ -366,6 +379,23 @@ func main() {
     })
 
     authorized.POST("/edit", func(c *gin.Context) {
+        key := c.PostForm("key")
+        m := getMarker(key)
+        if m!=nil {
+            c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
+            "title": "Editer un marker",
+            "marker": *m,
+            "groups": groups,
+            "key": key,
+            "edit": true,
+            })
+
+        }
+        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
+        //c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+    })
+
+    authorized.POST("/save", func(c *gin.Context) {
         title := c.PostForm("title")
         desc := c.PostForm("desc")
         x, err := strconv.Atoi(c.PostForm("x"))
@@ -379,8 +409,7 @@ func main() {
         //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
         m := Marker{Title:title, Desc: desc, X: x, Y: y, Group: group }
         m.WriteToDBWithKey(key)
-        c.Request.Header.Get("Referer")
-        c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+        c.Redirect(http.StatusMovedPermanently, "/markers")
     })
 
 

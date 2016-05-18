@@ -12,53 +12,70 @@
     <div class="col-lg-8">
       <h1>{{.title}}</h1>
       <div class="row">
+      {{ if .edit }}
+      <form action="save" method="post" class="form-horizontal col-lg-9">
+      {{else}}
       <form action="add" method="post" class="form-horizontal col-lg-9">
+      {{end}}
         <fieldset>
+          {{ if .edit }}
+          <input type="hidden" name="key" value="{{.key}}">
+          <legend>Editer un marqueur :</legend>
+          {{else}}
           <legend>Ajouter un marqueur :</legend>
+          {{end}}
           <div class="form-group">
             <label for="group" class="col-lg-3 control-label">Type :</label>
             <div class="col-lg-9">
               <div id='group'></div>
-              <input type="hidden" name="group" id="group-field">
+              <input type="hidden" name="group" id="group-field" value="{{.marker.Group}}">
             </div>
           </div>
           <div class="form-group">
             <label for="inputTitle" class="col-lg-3 control-label">Titre :</label>
             <div class="col-lg-9">
-              <input type="text" name="title" id="inputTitle" class="form-control" required="true" aria-describedby="helpBlock">
+              <input type="text" name="title" id="inputTitle" class="form-control" required="true" aria-describedby="helpBlock" value="{{.marker.Title}}">
               <span id="helpBlock" class="help-block">Ce champ peut être modifié à votre convenance.</span>
             </div>
           </div>
           <div class="form-group">
             <label for="inputDesc" class="col-lg-3 control-label">Description :</label>
             <div class="col-lg-9">
-              <input type="text" name="desc" id="inputDesc" class="form-control" aria-describedby="helpBlock2">
+              <input type="text" name="desc" id="inputDesc" class="form-control" aria-describedby="helpBlock2" value="{{.marker.Desc}}">
               <span id="helpBlock2" class="help-block"><em>Champ facultatif</em></span>
             </div>
           </div>
           <div class="form-group">
             <label for="inputX" class="col-lg-3 control-label">Coord. X :</label>
             <div class="col-lg-9">
-              <input type="number" name="x" id="inputX" class="form-control" required="true">
+              <input type="number" name="x" id="inputX" class="form-control" required="true" value="{{.marker.X}}">
             </div>
           </div>
           <div class="form-group">
             <label for="inputY" class="col-lg-3 control-label">Coord. Y :</label>
             <div class="col-lg-9">
-              <input type="number" name="y" id="inputY" class="form-control" required="true">
+              <input type="number" name="y" id="inputY" class="form-control" required="true" value="{{.marker.Y}}">
             </div>
           </div>
           <div class="form-group">
             <div class="col-lg-6 col-lg-offset-6">
               <button type="reset" class="btn btn-default">Annuler</button>
+              {{ if .edit }}
+              <button type="submit" class="btn btn-primary">Sauver</button>
+              {{else}}
               <button type="submit" class="btn btn-primary">Ajouter</button>
+              {{end}}
             </div>
           </div>
         </fieldset>
       </form>
       </div>
 
-      <div class="row">
+      {{ if not .edit }}
+      <div class="row" >
+      {{else}}
+      <div class="row hidden" >
+      {{end}}
         <form action="addgroup" method="post" class="form-horizontal col-lg-9">
           <fieldset>
             <legend>Ajouter un type :</legend>
