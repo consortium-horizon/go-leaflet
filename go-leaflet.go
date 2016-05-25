@@ -251,6 +251,19 @@ func getMarker(key string) *Marker {
     return nil
 }
 
+func getGroup(key string) *Group {
+    db := initDB()
+    var err error
+    var valueread []byte
+    valueread, err = db.Read(key)
+    if err==nil{
+        var g Group
+        err = g.GobDecode(valueread)
+        return &g
+    }
+    return nil
+}
+
 func groups() map[int]Group {
     groups := make(map[int]Group)
     db := initDB()
@@ -357,7 +370,6 @@ func main() {
         desc := c.PostForm("desc")
         color := c.PostForm("color")
         icon := c.PostForm("icon")
-        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v; color: %v; icon:%v", title, desc, x, y, color, icon)
         g := Group{Name:name, Desc: desc, Color:color, Icon:icon }
         g.WriteToDB()
         c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
@@ -391,8 +403,21 @@ func main() {
             })
 
         }
-        //fmt.Printf("title: %v; desc: %v; x: %v; y: %v", title, desc, x, y)
-        //c.Redirect(http.StatusMovedPermanently, c.Request.Header.Get("Referer"))
+    })
+
+    authorized.POST("/editgroup", func(c *gin.Context) {
+        key := c.PostForm("key")
+        g := getGroup(key)
+        if g!=nil {
+            c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
+            "title": "Editer un groupe",
+            "group": *g,
+            "groups": groups,
+            "key": key,
+            "editgroup": true,
+            })
+
+        }
     })
 
     authorized.POST("/save", func(c *gin.Context) {
@@ -410,6 +435,17 @@ func main() {
         m := Marker{Title:title, Desc: desc, X: x, Y: y, Group: group }
         m.WriteToDBWithKey(key)
         c.Redirect(http.StatusMovedPermanently, "/markers")
+    })
+
+    authorized.POST("/savegroup", func(c *gin.Context) {
+        name := c.PostForm("name")
+        desc := c.PostForm("desc")
+        color := c.PostForm("color")
+        icon := c.PostForm("icon")
+        key := c.PostForm("key")
+        g := Group{Name:name, Desc: desc, Color:color, Icon:icon }
+        g.WriteToDBWithKey(key)
+        c.Redirect(http.StatusMovedPermanently, "/groups")
     })
 
 
