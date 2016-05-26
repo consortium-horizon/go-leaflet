@@ -331,6 +331,7 @@ func main() {
         c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
             "title": "Ajouter un marqueur",
             "markers": markers,
+            "onAddMarker": true,
             "groups": groups,
         })
     })
@@ -395,7 +396,7 @@ func main() {
         m := getMarker(key)
         if m!=nil {
             c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
-            "title": "Editer un marker",
+            "title": "Editer un marqueur",
             "marker": *m,
             "groups": groups,
             "key": key,

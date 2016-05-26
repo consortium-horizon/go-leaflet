@@ -119,8 +119,10 @@ $(document).ready(function () {
     //$('#inputTitle').val($('#group-field').attr('Gname'));
     
   });
-  // Set the default state of group & inputTitle field
-  $('#group-field').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].value);
-  $('#inputTitle').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].GroupName);
 
+  {{ if .onAddMarker }}
+    // Set the default state of group & inputTitle field
+    $('#group-field').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].value);
+    $('#inputTitle').val(group_list[$("#group").jqxDropDownList('getSelectedIndex')].GroupName);
+  {{ end }}
 });
