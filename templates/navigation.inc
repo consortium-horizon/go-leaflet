@@ -43,7 +43,7 @@
             <p>GameMap est un outil de cartographie responsive créé par la guilde <a href="https://www.consortium-horizon.com" target="_blank">Le Consortium Horizon</a>. GameMap est Open source et disponible sur <a href="https://github.com/consortium-horizon/go-leaflet" target="_blank">GitHub</a>.</p>
             <p>Pour l'instant il ne fonctionne qu'avec la carte du jeu Tree of Life.</p>
             <p>Le principe est simple : créez des groupes de marqueurs, puis ajoutez des marqueurs en fonction de leur coordoonées en jeu.</p>
-            <p><b>Crédits :</b> Fr3ek &amp; ZFiRE</p>
+            <p><b>Crédits :</b> Fre3k &amp; ZFiRE</p>
             <p><b>Version :</b> 1.0</p>
             <!--
               <div class="panel panel-primary">
