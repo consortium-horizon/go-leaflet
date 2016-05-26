@@ -15,19 +15,6 @@
     return false;
   });
 
-/*
-// Custom markers (for testing)
-  var cmarker1 = L.marker(xy(3361,8872), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre un peu long parce qu\'il faut tester</b><br><em>Campement LCH</em><br><a href="#">supprimer</a> | <a href="#">modifier</a>');
-  var cmarker2 = L.marker(xy(7958,14332), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
-  var cmarker3 = L.marker(xy(3568,7801), {icon: L.divIcon({className: 'icon-location blue'})}).bindPopup('<b>Titre</b><br><em>Campement LCH</em>');
-
-  var cmarker4 = L.marker(xy(5120,6185), {icon: L.divIcon({className: 'icon-home green'})}).bindPopup('<b>Union</b><br><em>Campement principal</em>');
-  var cmarker5 = L.marker(xy(3376,8633), {icon: L.divIcon({className: 'icon-home green'})}).bindPopup('<b>Deutschland</b><br><em>Campement</em>');
-  // Define the Group of markers
-    var cmarkers1 = L.layerGroup([cmarker1, cmarker2]);
-    cmarkers1.addLayer(cmarker3);
-    var cmarkers2 = L.layerGroup([cmarker4, cmarker5]);
-*/
 
 // Map initializer
   var map = L.map('map', {
@@ -42,17 +29,6 @@
   var image = L.imageOverlay('/images/map_tree_of_life.jpg', bounds).addTo(map);
   map.fitBounds(bounds);
 
-/*
-// Layers initializer
-  var overlayMaps = {
-    '<i class="icon-location blue"></i> Campements LCH': cmarkers1,
-    '<i class="icon-home green"></i> Campements alliés': cmarkers2
-  };
-*/
-/*
-// Add Layers
-  L.control.layers(null, overlayMaps, {collapsed: false}).addTo(map);
-*/
 
 // Mouse Position plugin
   var mouse = L.control.mousePosition({
