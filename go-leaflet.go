@@ -393,13 +393,16 @@ func main() {
 
     authorized.POST("/edit", func(c *gin.Context) {
         key := c.PostForm("key")
+        keybase := "marker"
+        index,err := strconv.Atoi(strings.TrimPrefix(key, keybase))
         m := getMarker(key)
-        if m!=nil {
+        if m!=nil && err == nil {
             c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
             "title": "Editer un marqueur",
             "marker": *m,
             "groups": groups,
             "key": key,
+            "index":index,
             "edit": true,
             })
 
@@ -409,12 +412,15 @@ func main() {
     authorized.POST("/editgroup", func(c *gin.Context) {
         key := c.PostForm("key")
         g := getGroup(key)
-        if g!=nil {
+        keybase := "group"
+        index,err := strconv.Atoi(strings.TrimPrefix(key, keybase))
+        if g!=nil && err == nil{
             c.HTML(http.StatusOK, "markers-new.tmpl", gin.H{
             "title": "Editer un groupe",
             "group": *g,
             "groups": groups,
             "key": key,
+            "index":index,
             "editgroup": true,
             })
 
